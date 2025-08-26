@@ -187,7 +187,6 @@ function getBooksPromise() {
     }
   }
   
-  // Exportar si lo necesitas en otros módulos
   module.exports = {
     getBooksPromise,
     getBooksAsync,
@@ -199,7 +198,6 @@ function getBooksPromise() {
     getBookByTitleAsync
   };
   
-  // Ejemplos de ejecución local (puedes comentar/descomentar al testear)
   if (require.main === module) {
     getBooksPromise();
     getBooksAsync();
