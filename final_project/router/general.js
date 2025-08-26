@@ -3,7 +3,8 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
-
+const axios = require('axios');
+const BASE_URL = process.env.BOOKS_API || 'http://localhost:5000'; 
 
 public_users.post("/register", (req, res) => {
     const { username, password } = req.body || {};
@@ -102,5 +103,115 @@ public_users.get('/review/:isbn', function (req, res) {
         reviews
     });
 });
+
+
+// -------------------------
+// Task 10: Get all books
+// -------------------------
+// With Promises
+function getBooksPromise() {
+    axios.get(`${BASE_URL}/`)
+      .then(response => {
+        console.log("Books (Promise):", response.data);
+      })
+      .catch(err => console.error(err.message));
+  }
+  
+  // With async/await
+  async function getBooksAsync() {
+    try {
+      const response = await axios.get(`${BASE_URL}/`);
+      console.log("Books (Async):", response.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  
+  // -------------------------
+  // Task 11: Get book by ISBN
+  // -------------------------
+  function getBookByIsbnPromise(isbn) {
+    axios.get(`${BASE_URL}/isbn/${isbn}`)
+      .then(response => {
+        console.log(`Book ${isbn} (Promise):`, response.data);
+      })
+      .catch(err => console.error(err.message));
+  }
+  
+  async function getBookByIsbnAsync(isbn) {
+    try {
+      const response = await axios.get(`${BASE_URL}/isbn/${isbn}`);
+      console.log(`Book ${isbn} (Async):`, response.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  
+  // -------------------------
+  // Task 12: Get book by Author
+  // -------------------------
+  function getBookByAuthorPromise(author) {
+    axios.get(`${BASE_URL}/author/${author}`)
+      .then(response => {
+        console.log(`Books by ${author} (Promise):`, response.data);
+      })
+      .catch(err => console.error(err.message));
+  }
+  
+  async function getBookByAuthorAsync(author) {
+    try {
+      const response = await axios.get(`${BASE_URL}/author/${author}`);
+      console.log(`Books by ${author} (Async):`, response.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  
+  // -------------------------
+  // Task 13: Get book by Title
+  // -------------------------
+  function getBookByTitlePromise(title) {
+    axios.get(`${BASE_URL}/title/${title}`)
+      .then(response => {
+        console.log(`Books with title ${title} (Promise):`, response.data);
+      })
+      .catch(err => console.error(err.message));
+  }
+  
+  async function getBookByTitleAsync(title) {
+    try {
+      const response = await axios.get(`${BASE_URL}/title/${title}`);
+      console.log(`Books with title ${title} (Async):`, response.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+  
+  // Exportar si lo necesitas en otros módulos
+  module.exports = {
+    getBooksPromise,
+    getBooksAsync,
+    getBookByIsbnPromise,
+    getBookByIsbnAsync,
+    getBookByAuthorPromise,
+    getBookByAuthorAsync,
+    getBookByTitlePromise,
+    getBookByTitleAsync
+  };
+  
+  // Ejemplos de ejecución local (puedes comentar/descomentar al testear)
+  if (require.main === module) {
+    getBooksPromise();
+    getBooksAsync();
+  
+    getBookByIsbnPromise(1);
+    getBookByIsbnAsync(2);
+  
+    getBookByAuthorPromise("Jane Austen");
+    getBookByAuthorAsync("Unknown");
+  
+    getBookByTitlePromise("Pride and Prejudice");
+    getBookByTitleAsync("Fairy tales");
+  }
 
 module.exports.general = public_users;
